@@ -1,0 +1,64 @@
+﻿public static DateTime DT(string value)
+{
+	return Convert.ToDateTime(value);
+}
+
+public static DateTime Now()
+{
+    return DateTime.Now;
+}
+
+public static DateTime UtcNow()
+{
+    return DateTime.UtcNow;
+}
+
+public static DateTime NowAddHours(double value)
+{
+    return DateTime.Now.AddHours(value);
+}
+
+public static DateTime UtcNowAddHours(double value)
+{
+    return DateTime.UtcNow.AddHours(value);
+}
+
+public static DateTime NowAddDays(double value)
+{
+    return DateTime.Now.AddDays(value);
+}
+
+public static DateTime UtcNowAddDays(double value)
+{
+    return DateTime.UtcNow.AddDays(value);
+}
+
+public static DateTime NowAddMonths(int value)
+{
+    return DateTime.Now.AddMonths(value);
+}
+
+public static DateTime UtcNowAddMonths(int value)
+{
+    return DateTime.UtcNow.AddMonths(value);
+}
+
+public static string Empty()
+{
+    return string.Empty;
+}
+
+public static string EmptyString()
+{
+    return string.Empty;
+}
+
+public static string WhiteSpace()
+{
+    return " ";
+}
+
+public static string Space()
+{
+    return " ";
+}

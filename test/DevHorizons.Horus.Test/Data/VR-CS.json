@@ -1,0 +1,303 @@
+{
+  /* Important Notes */
+  /*
+      01. The name for either a "Rule" or "DecisionTable" should be unique.
+      02. The "Group" and "SubGroup" combination values together in the ruleset file should be unique from all the other files which can represent the "entity", or rule type etc.
+         Eg. "Group": "Global", "SubGroup": "ValidateEsitmate";
+      03. All the operations should be assigned with pure C# syntax code.
+      04. The operations property accept the following scenarios:
+        04.1. Assigning for a variable by a Comparission operations. E.g. IsMatch = x == y
+        04.1. Assigning for a variable by an arithmetic operations. E.g. Result = (x / y) + j
+        04.2. Calling an existing "rule" with the prefix charcter "@". E.g. "@Rule1", "@Rule2".
+        04.3. Calling an existing "decision table" with the prefix charcter "#". E.g. "#DecisionTable1", "#DecisionTable2".
+        04.4. Calling an existing "condition table" with the prefix charcter "##". E.g. "##ConditionTable1", "##ConditionTable2". 
+      05. The sequence of the rules or decision tables is not necessary. Which means a rule can call a rule before or after in the JSON data sequence.
+      06. The variables, inputs, names of the rules and the names of the decision table are case sensitive. Which means "x" is not the same as "X".
+      07. The data types specified in the "Variables" or "Inputs" must match existing value datat types ones in C#.
+         E.g. "bool", "int", "short", "DateTime", "string", "oject", etc.
+      08. The default value of the "CommandCached" is "true" even if it was not specified.
+      09. The default value of the "ValueCached" is "false" even if it was not specified.
+      10. If you want to a "true" or "false" value to a boolean variable inside an operation, you need to be added between double quotes with lower case.
+          E.g. IsValid = "true" , IsMatch = "false"
+      11. You can add multiple assignment operations in one operation item using the semicolon separator (";") the same as you do with C#.
+          E.g. "sum = num1 + num2; IsValid = x > y; result = (v * z) * x;"
+      12. You can use any of the valid C# built in methods inside the "System" namespace's classes (such as "String", "Math", etc) but you will need to put the fully qualified name of the class:
+          E.g. "System.String.IsNullOrEmpty(value)",  System.Math.Round(x, 2);
+    */
+  "Group": "Global",
+  "SubGroup": "ValidateEsitmate",
+  "Description": "",
+  "Rules": [
+    /* Rule1 */
+    {
+      "Name": "Rule1",
+      "Description": "",
+      "CommandCached": true,
+      "ValueCached": false,
+      "Variables": [
+        {
+          "Name": "Match",
+          "Type": "bool"
+        },
+        {
+          "Name": "Sum",
+          "Type": "int"
+        }
+      ],
+      "Operations": [
+        "Match = X == Y",
+        "Sum = X + Y"
+      ],
+      "Inputs": [
+        {
+          "Name": "X",
+          "Type": "int"
+        },
+        {
+          "Name": "Y",
+          "Type": "int"
+        }
+      ],
+      "Outputs": [
+        "Match",
+        "Sum",
+        "AutoApproval",
+        "IsValid"
+      ]
+    },
+    /* Rule2 */
+    {
+      "Name": "Rule2",
+      "Description": "",
+      "CommandCached": true,
+      "ValueCached": true,
+      "Variables": [
+        {
+          "Name": "I",
+          "Type": "int"
+        },
+        {
+          "Name": "J",
+          "Type": "int"
+        },
+        {
+          "Name": "AutoApproval",
+          "Type": "bool"
+        },
+        {
+          "Name": "IsValid",
+          "Type": "bool"
+        }
+      ],
+      "Inputs": [
+        {
+          "Name": "X",
+          "Type": "int"
+        },
+        {
+          "Name": "Y",
+          "Type": "int"
+        },
+        {
+          "Name": "K",
+          "Type": "int"
+        }
+      ],
+      "Operations": [
+        "@Rule1",
+        "X = X * 2",
+        "Y = Y * 2",
+        "@Rule3",
+        "@Rule4",
+        "#DT1"
+      ],
+      "Outputs": [
+        "Match",
+        "Sum",
+        "Z",
+        "AutoApproval",
+        "IsValid"
+      ]
+    },
+    /* Rule3 */
+    {
+      "Name": "Rule3",
+      "Description": "",
+      "CommandCached": true,
+      "ValueCached": false,
+      "Operations": [
+        "I = 2",
+        "J = 5"
+      ]
+    },
+    /* Rule4 */
+    {
+      "Name": "Rule4",
+      "Description": "",
+      "CommandCached": true,
+      "ValueCached": false,
+      "Variables": [
+        {
+          "Name": "Z",
+          "Type": "int"
+        }
+      ],
+      "Operations": [
+        "K = 2",
+        "Z = I * J * K "
+      ],
+      "Outputs": [
+        "Z"
+      ]
+    },
+    /* Rule5 */
+    {
+      "Name": "Rule5",
+      "Description": "",
+      "CommandCached": true,
+      "ValueCached": false,
+      "Variables": [
+        {
+          "Name": "AutoApproval",
+          "Type": "bool"
+        },
+        {
+          "Name": "IsValid",
+          "Type": "bool"
+        }
+      ],
+      "Inputs": [
+        {
+          "Name": "X",
+          "Type": "int"
+        },
+        {
+          "Name": "Y",
+          "Type": "int"
+        }
+      ],
+      "Operations": [
+        "##CT1"
+      ],
+      "Outputs": [
+        "AutoApproval",
+        "IsValid"
+      ]
+    }
+  ],
+  "DecisionTables": [
+    {
+      "Name": "DT1",
+      "Inputs": [
+        {
+          "Name": "X",
+          "Type": "int"
+        },
+        {
+          "Name": "Y",
+          "Type": "int"
+        }
+      ],
+      "DefaultValues": [ "true", "false" ],
+      "Outputs": [
+        {
+          "Name": "AutoApproval",
+          "Type": "bool"
+        },
+        {
+          "Name": "IsValid",
+          "Type": "bool"
+        }
+      ],
+      "Decisions": [
+        {
+          "Conditions": [ 2, 4 ],
+          "Return": [ "true", "true" ]
+        },
+        {
+          "Conditions": [ 2, 5 ],
+          "Return": [ "true", "false" ]
+        },
+        {
+          "Conditions": [ 3, 5 ],
+          "Return": [ "false", "false" ]
+        },
+        {
+          "Conditions": [ 3, 6 ],
+          "Return": [ "false", "true" ]
+        },
+        {
+          "Conditions": [ 4, 6 ],
+          "Return": [ "true", "true" ]
+        }
+      ]
+    }
+  ],
+  "ConditionTables": [
+    {
+      "Name": "CT1",
+      "Inputs": [
+        {
+          "Name": "X",
+          "Type": "{\"Name\":\"ValidateActive\",\"Group\":\"FR\",\"Description\":\"\",\"CommandCached\":true,\"ValueCached\":false,\"Inputs\":[{\"Name\":\"StatusCode\",\"Type\":\"string\"}],\"Outputs\":[{\"Name\":\"Result\",\"Type\":\"bool\",\"DefaultValue\":true}],\"Decisions\":[{\"Conditions\":[\" = \u0022Actif\u0022\"],\"Return\":[false]}]}"
+        },
+        {
+          "Name": "Y",
+          "Type": "int"
+        }
+      ],
+      "DefaultValues": [ "false", "false" ],
+      "Outputs": [
+        {
+          "Name": "AutoApproval",
+          "Type": "bool"
+        },
+        {
+          "Name": "IsValid",
+          "Type": "bool"
+        }
+      ],
+      "Decisions": [
+        {
+          "Conditions": [ ".In(10,2,20)", ".Between(2, 6)" ],
+          "Return": [ "false", "true" ]
+        },
+        {
+          "Conditions": [ " == 2", "==4" ],
+          "Return": [ "true", "true" ]
+        },
+        {
+          "Conditions": [ ">2", ">4" ],
+          "Return": [ "true", "false" ]
+        }
+      ]
+    }
+  ]
+
+  {
+    "Name": "ValidateActive",
+    "Group": "FR",
+    "Description": "",
+    "CommandCached": true,
+    "ValueCached": false,
+    "Inputs": [
+      {
+        "Name": "StatusCode",
+        "Type": "string"
+      }
+    ],
+    "Outputs": [
+      {
+        "Name": "Result",
+        "Type": "bool",
+        "DefaultValue": true
+      }
+    ],
+    "Decisions": [
+      {
+        "Conditions": [ " != \"Test3\" " ],
+        "Return": [ false ]
+      }
+    ]
+  }
+}

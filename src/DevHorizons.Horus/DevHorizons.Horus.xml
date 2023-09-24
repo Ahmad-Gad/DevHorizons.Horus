@@ -1,0 +1,2273 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DevHorizons.Horus</name>
+    </assembly>
+    <members>
+        <member name="T:DevHorizons.Horus.Abstract.Invoker">
+            <summary>
+            An abstract class has the common shared implementations for the "<see cref="T:DevHorizons.Horus.Interfaces.IInvoker" />" interface.
+            </summary>
+            <Created>
+              <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+              <DateTime>18/02/2020 12:37 PM</DateTime>
+            </Created>
+            <seealso cref="T:DevHorizons.Horus.Interfaces.IInvoker" />
+        </member>
+        <member name="T:DevHorizons.Horus.Abstract.Invoker.ErrorRaisedHandler">
+            <summary>
+               A delegate to handel the error raised by the class.
+            </summary>
+            <param name="error">The raised error.</param>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>08/11/2018 11:13 AM</DateTime>
+            </Created>
+        </member>
+        <member name="T:DevHorizons.Horus.Abstract.Invoker.CacheParsedCommandHandler">
+            <summary>
+               Caches parsed command generated from the passed JSON data.
+               <para>This method will be triggered only if the "CommandCached" property is marked as <c>true</c> inside the rule's JSON data.</para>
+               <para>This method needs to be implemented by the caller/consumer application.</para>
+            </summary>
+            <param name="ruleKey">The unique key of the specified rule.</param>
+            <param name="parsedCmd">The parsed command generated from the passed JSON data.</param>
+            <Created>
+              <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+              <DateTime>19/02/2020 11:48 AM</DateTime>
+            </Created>
+        </member>
+        <member name="T:DevHorizons.Horus.Abstract.Invoker.GetCachedParsedCommandHandler">
+            <summary>
+               Gets the cached parsed command generated from the passed JSON data. This method needs to be implemented by the caller/consumer application.
+               <para>This method will be triggered only if the "CommandCached" property is marked as <c>true</c> inside the rule's JSON data.</para>
+               <para>This method needs to be implemented by the caller/consumer application.</para>
+            </summary>
+            <param name="ruleKey">The unique key of the specified rule.</param>
+            <returns>
+               The cached parsed command generated from the passed JSON data.
+            </returns>
+            <Created>
+              <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+              <DateTime>18/02/2020 11:39 AM</DateTime>
+            </Created>
+        </member>
+        <member name="T:DevHorizons.Horus.Abstract.Invoker.CacheExecutionValueHandler">
+            <summary>
+               Caches the execution value/result after executing a successful command generated from the specified rule.
+               <para>This method will be triggered only if the "ValueCached" property is marked as <c>true</c> inside the rule's JSON data.</para>
+               <para>The "ValueCached" property should only marked as <c>true</c> if we are pretty sure that this rule can be called over and over by the same inputs.</para>
+               <para>This method needs to be implemented by the caller/consumer application.</para>
+            </summary>
+            <param name="ruleKey">The unique key of the specified rule.</param>
+            <param name="inputs">The inputs values to be combined with the rule key in the cache to distinguish the cached values by different inputs for the same rule.</param>
+            <param name="ruleValue">The rule value.</param>
+            <Created>
+              <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+              <DateTime>18/02/2020 11:45 AM</DateTime>
+            </Created>
+        </member>
+        <member name="T:DevHorizons.Horus.Abstract.Invoker.GetCachedExecutionValueHandler">
+            <summary>
+               Gets the cached execution value/result after executing a successful command generated from the specified rule.
+               <para>This method will be triggered only if the "ValueCached" property is marked as <c>true</c> inside the rule's JSON data.</para>
+               <para>The "ValueCached" property should only marked as <c>true</c> if we are pretty sure that this rule can be called over and over by the same inputs.</para>
+               <para>This method needs to be implemented by the caller/consumer application.</para>
+            </summary>
+            <param name="ruleKey">The unique key of the specified rule.</param>
+            <param name="inputs">The inputs values to be combined with the rule key in the cache to distinguish the cached values by different inputs for the same rule.</param>
+            <returns>
+               The cached execution value/result after executing a successful command generated from the specified rule.
+            </returns>
+            <Created>
+              <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+              <DateTime>18/02/2020 11:45 AM</DateTime>
+            </Created>
+        </member>
+        <member name="T:DevHorizons.Horus.Abstract.Invoker.GetConditionTableFromSourceHandler">
+            <summary>
+               Called when [get the Condition Table from either some data source or cache].
+            </summary>
+            <param name="group">The group name.</param>
+            <param name="name">The rule/condition table's name.</param>
+            <returns>
+               The Condition Table from either some data source or cache.
+            </returns>
+            <Created>
+              <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+              <DateTime>03/07/2020 05:58 PM</DateTime>
+            </Created>
+        </member>
+        <member name="E:DevHorizons.Horus.Abstract.Invoker.ErrorRaised">
+            <summary>
+               Occurs when [error raised] which is handled by the "<see cref="M:DevHorizons.Horus.Abstract.Invoker.HandleError(DevHorizons.Horus.LogEntry)"/>" method.
+            </summary>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/02/2020 12:38 PM</DateTime>
+            </Created>
+        </member>
+        <member name="E:DevHorizons.Horus.Abstract.Invoker.CacheParsedCommand">
+            <summary>
+               Occurs when [on cache parsed command] which is handled by "<see cref="M:DevHorizons.Horus.Abstract.Invoker.OnCacheParsedCommand(System.String,System.String)"/>".
+            </summary>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>19/02/2020 12:27 PM</DateTime>
+            </Created>
+        </member>
+        <member name="E:DevHorizons.Horus.Abstract.Invoker.GetCachedParsedCommand">
+            <summary>
+               Occurs when [on get cached parsed command] which is handled by "<see cref="M:DevHorizons.Horus.Abstract.Invoker.OnGetCachedParsedCommand(System.String)"/>".
+            </summary>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>19/02/2020 01:44 PM</DateTime>
+            </Created>
+        </member>
+        <member name="E:DevHorizons.Horus.Abstract.Invoker.CacheExecutionValue">
+            <summary>
+               Occurs when [on cache execution value] which is handled by "<see cref="M:DevHorizons.Horus.Abstract.Invoker.OnCacheExecutionValue(System.String,System.Collections.Generic.IDictionary{System.String,System.String},System.Collections.Generic.List{System.Collections.Generic.Dictionary{System.String,System.Object}},System.Boolean)"/>".
+            </summary>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>19/02/2020 01:44 PM</DateTime>
+            </Created>
+        </member>
+        <member name="E:DevHorizons.Horus.Abstract.Invoker.GetCachedExecutionValue">
+            <summary>
+               Occurs when [on get cached execution value] which is handled by "<see cref="M:DevHorizons.Horus.Abstract.Invoker.OnGetCachedExecutionValue(System.String,System.Collections.Generic.IDictionary{System.String,System.String})"/>".
+            </summary>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>19/02/2020 01:45 PM</DateTime>
+            </Created>
+        </member>
+        <member name="E:DevHorizons.Horus.Abstract.Invoker.GetConditionTableFromSource">
+            <summary>
+               Occurs when [get the Condition Table <c>JSON</c> data from either some data source or cache] which is handled by "<see cref="M:DevHorizons.Horus.Abstract.Invoker.OnGetConditionTableFromSource(System.String,System.String)"/>".
+            </summary>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>03/07/2020 05:58 PM</DateTime>
+            </Created>
+        </member>
+        <member name="P:DevHorizons.Horus.Abstract.Invoker.Errors">
+            <summary>
+               Gets the raised errors list as "<see cref="T:System.Collections.Generic.List`1"/>" of ""<see cref="T:DevHorizons.Horus.LogEntry"/>.
+            </summary>
+            <value>
+               The raised errors.
+            </value>
+            <Created>
+              <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+              <DateTime>02/11/2018 05:39 PM</DateTime>
+            </Created>
+        </member>
+        <member name="P:DevHorizons.Horus.Abstract.Invoker.FailOverGroup">
+            <summary>
+               Gets or sets the fail over group. This group will be used to search for a rule matching it if not found a match for the primary one.
+            </summary>
+            <value>
+            The fail over group.
+            </value>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>06/07/2020 05:55 PM</DateTime>
+            </Created>
+            <Created>
+              <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+              <DateTime>06/07/2020 05:53 PM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Abstract.Invoker.GetRuleKey(DevHorizons.Horus.Model.ConditionTable)">
+            <summary>
+               Gets the rule key.
+            </summary>
+            <param name="ct">The ct.</param>
+            <returns>
+                The rule key.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>13/10/2020 06:43 PM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Abstract.Invoker.GetRuleKey(System.String,System.String)">
+            <summary>
+               Gets the rule key.
+            </summary>
+            <param name="group">The group.</param>
+            <param name="name">The name.</param>
+            <returns>
+                The rule key.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>13/10/2020 06:48 PM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Abstract.Invoker.ClearErrors">
+            <summary>
+               Clears the errors list.
+            </summary>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>02/11/2018 09:48 PM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Abstract.Invoker.ExecuteRule(System.String,System.String,System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+               Executes the rule and return the output values as "<see cref="T:System.Collections.Generic.List`1" />" where "T" is "<see cref="T:System.Collections.Generic.IDictionary`2" />" (where "TKey" is a "<see cref="T:System.String" />" and "TValue" is an "<see cref="T:System.Object" />").
+            </summary>
+            <param name="group">The group.</param>
+            <param name="ruleName">The name of the rule to be executed.</param>
+            <param name="inputs">The inputs data as "<see cref="T:System.Collections.Generic.IDictionary`2" />" where "TKey" is a "<see cref="T:System.String" />" and "TValue" is an "<see cref="T:System.String" />". Those inputs names must be covered inside the specified rule in the "Inputs" section.</param>
+            <returns>
+            The validated results as "<see cref="T:System.Collections.Generic.IDictionary`2" />" where "TKey" is a "<see cref="T:System.String" />" and "TValue" is an "<see cref="T:System.Object" />".
+            </returns>
+            <Created>
+              <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+              <DateTime>02/07/2020 12:02 PM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Abstract.Invoker.ExecuteRule(DevHorizons.Horus.Model.ConditionTable,System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            Executes the rule and return the output values as "<see cref="T:System.Collections.Generic.List`1" />" where "T" is "<see cref="T:System.Collections.Generic.IDictionary`2" />" (where "TKey" is a "<see cref="T:System.String" />" and "TValue" is an "<see cref="T:System.Object" />").
+            </summary>
+            <param name="conditionTable">The condition table.</param>
+            <param name="inputs">The inputs.</param>
+            <returns>
+               The validated results as "<see cref="T:System.Collections.Generic.IDictionary`2" />" where "TKey" is a "<see cref="T:System.String" />" and "TValue" is an "<see cref="T:System.Object" />".
+            </returns>
+            <Created>
+              <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+              <DateTime>08/10/2020 11:10 PM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Abstract.Invoker.OnCacheParsedCommand(System.String,System.String)">
+            <summary>
+               Caches parsed command generated from the passed JSON data.
+               <para>This method will be triggered only if the "CommandCached" property is marked as <c>true</c> inside the rule's JSON data.</para>
+               <para>This method needs to be implemented by the caller/consumer application.</para>
+            </summary>
+            <param name="ruleKey">The unique key of the specified rule.</param>
+            <param name="parsedCmd">The parsed command generated from the passed JSON data.</param>
+            <Created>
+              <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+              <DateTime>18/02/2020 11:38 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Abstract.Invoker.OnErrorRaised(DevHorizons.Horus.LogEntry)">
+            <summary>
+               Caches parsed command generated from the passed <c>JSON</c> data.
+            </summary>
+            <param name="error">The error details as an instance of <see cref="T:DevHorizons.Horus.LogEntry"/>.</param>
+            <Created>
+              <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+              <DateTime>18/02/2020 11:38 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Abstract.Invoker.OnCacheConditionTable(DevHorizons.Horus.Model.ConditionTable)">
+            <summary>
+               Caches the Condition Table.
+            </summary>
+            <param name="conditionTable">The Condition Table.</param>
+            <Created>
+              <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+              <DateTime>18/02/2020 11:38 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Abstract.Invoker.OnGetCachedConditionTable">
+            <summary>
+               Called when [get the cached Condition Table].
+            </summary>
+            <returns>
+               Returns the cached Condition Table.
+            </returns>
+            <Created>
+              <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+              <DateTime>02/07/2020 05:05 PM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Abstract.Invoker.OnGetCachedParsedCommand(System.String)">
+            <summary>
+               Gets the cached parsed command generated from the passed JSON data. This method needs to be implemented by the caller/consumer application.
+               <para>This method will be triggered only if the "CommandCached" property is marked as <c>true</c> inside the rule's JSON data.</para>
+               <para>This method needs to be implemented by the caller/consumer application.</para>
+            </summary>
+            <param name="ruleKey">The unique key of the specified rule.</param>
+            <returns>
+               The cached parsed command generated from the passed JSON data.
+            </returns>
+            <Created>
+              <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+              <DateTime>18/02/2020 11:39 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Abstract.Invoker.OnCacheExecutionValue(System.String,System.Collections.Generic.IDictionary{System.String,System.String},System.Collections.Generic.List{System.Collections.Generic.Dictionary{System.String,System.Object}},System.Boolean)">
+            <summary>
+               Caches the execution value/result after executing a successful command generated from the specified rule.
+               <para>This method will be triggered only if the "ValueCached" property is marked as <c>true</c> inside the rule's JSON data.</para>
+               <para>The "ValueCached" property should only marked as <c>true</c> if we are pretty sure that this rule can be called over and over by the same inputs.</para>
+               <para>This method needs to be implemented by the caller/consumer application.</para>
+            </summary>
+            <param name="ruleKey">The unique key of the specified rule.</param>
+            <param name="inputs">The inputs values to be combined with the rule key in the cache to distinguish the cached values by different inputs for the same rule.</param>
+            <param name="ruleValue">The rule's output value.</param>
+            <param name="flushCache">if set to <c>true</c> [flush all the cached execution values for this rule].</param>
+            <Created>
+              <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+              <DateTime>18/02/2020 11:41 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Abstract.Invoker.OnGetCachedExecutionValue(System.String,System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+               Gets the cached execution value/result after executing a successful command generated from the specified rule.
+               <para>This method will be triggered only if the "ValueCached" property is marked as <c>true</c> inside the rule's JSON data.</para>
+               <para>The "ValueCached" property should only marked as <c>true</c> if we are pretty sure that this rule can be called over and over by the same inputs.</para>
+               <para>This method needs to be implemented by the caller/consumer application.</para>
+            </summary>
+            <param name="ruleKey">The unique key of the specified rule.</param>
+            <param name="inputs">The inputs values to be combined with the rule key in the cache to distinguish the cached values by different inputs for the same rule.</param>
+            <returns>
+               The cached execution value/result after executing a successful command generated from the specified rule.
+            </returns>
+            <Created>
+              <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+              <DateTime>18/02/2020 11:45 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Abstract.Invoker.OnGetConditionTableFromSource(System.String,System.String)">
+            <summary>
+               Called when [get the Condition Table <c>JSON</c> data from either some data source or cache].
+            </summary>
+            <param name="group">The group name.</param>
+            <param name="name">The rule/condition table's name.</param>
+            <returns>
+               The Condition Table <c>JSON</c> data from either some data source or cache.
+            </returns>
+            <Created>
+              <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+              <DateTime>03/07/2020 06:09 PM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Abstract.Invoker.DevHorizons#Horus#Interfaces#IInvoker#ExecuteCommand(System.String)">
+            <summary>
+               Executes the generated/parsed command/code from the specified rule.
+               <para>This method can be overridden by a derived class to change the behaviour/implementation of the method using the generated command/code by a new technique or different scripting library.</para>
+            </summary>
+            <param name="parsedCommand">The parsed/generated command string.</param>
+            <returns>
+               The validated results as "<see cref="T:System.Collections.Generic.IDictionary`2"/>" where "TKey" is a "<see cref="T:System.String"/>" and "TValue" is an "<see cref="T:System.Object"/>".
+            </returns>
+            <Created>
+              <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+              <DateTime>18/02/2020 11:49 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Abstract.Invoker.InvokeCacheParsedCommand(System.String,System.String)">
+            <summary>
+               Caches parsed command generated from the passed JSON data.
+               <para>This method will be triggered only if the "CommandCached" property is marked as <c>true</c> inside the rule's JSON data.</para>
+               <para>This method needs to be implemented by the caller/consumer application.</para>
+            </summary>
+            <param name="ruleKey">The unique key of the specified rule.</param>
+            <param name="parsedCmd">The parsed command generated from the passed JSON data.</param>
+            <Created>
+              <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+              <DateTime>18/02/2020 11:38 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Abstract.Invoker.InvokeGetCachedParsedCommand(System.String)">
+            <summary>
+               Gets the cached parsed command generated from the passed JSON data. This method needs to be implemented by the caller/consumer application.
+               <para>This method will be triggered only if the "CommandCached" property is marked as <c>true</c> inside the rule's JSON data.</para>
+               <para>This method needs to be implemented by the caller/consumer application.</para>
+            </summary>
+            <param name="ruleKey">The unique key of the specified rule.</param>
+            <returns>
+               The cached parsed command generated from the passed JSON data.
+            </returns>
+            <Created>
+              <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+              <DateTime>18/02/2020 11:39 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Abstract.Invoker.InvokeCacheExecutionValue(System.String,System.Collections.Generic.IDictionary{System.String,System.String},System.Collections.Generic.List{System.Collections.Generic.Dictionary{System.String,System.Object}},System.Boolean)">
+            <summary>
+            Caches the execution value/result after executing a successful command generated from the specified rule.
+            <para>This method will be triggered only if the "ValueCached" property is marked as <c>true</c> inside the rule's JSON data.</para><para>The "ValueCached" property should only marked as <c>true</c> if we are pretty sure that this rule can be called over and over by the same inputs.</para><para>This method needs to be implemented by the caller/consumer application.</para>
+            </summary>
+            <param name="ruleKey">The unique key of the specified rule.</param>
+            <param name="inputs">The inputs values to be combined with the rule key in the cache to distinguish the cached values by different inputs for the same rule.</param>
+            <param name="ruleValue">The rule value.</param>
+            <param name="flushCache">if set to <c>true</c> [flush all the cached execution values for this rule].</param>
+            <Created>
+              <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+              <DateTime>18/02/2020 11:41 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Abstract.Invoker.InvokeGetCachedExecutionValue(System.String,System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+               Gets the cached execution value/result after executing a successful command generated from the specified rule.
+               <para>This method will be triggered only if the "ValueCached" property is marked as <c>true</c> inside the rule's JSON data.</para>
+               <para>The "ValueCached" property should only marked as <c>true</c> if we are pretty sure that this rule can be called over and over by the same inputs.</para>
+               <para>This method needs to be implemented by the caller/consumer application.</para>
+            </summary>
+            <param name="ruleKey">The unique key of the specified rule.</param>
+            <param name="inputs">The inputs values to be combined with the rule key in the cache to distinguish the cached values by different inputs for the same rule.</param>
+            <returns>
+               The cached execution value/result after executing a successful command generated from the specified rule.
+            </returns>
+            <Created>
+              <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+              <DateTime>18/02/2020 11:45 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Abstract.Invoker.InvokeGetConditionTableFromSource(System.String,System.String)">
+            <summary>
+               Invokes the get condition table from source.
+            </summary>
+            <param name="group">The group name.</param>
+            <param name="name">The rule/condition table's name.</param>
+            <returns>
+            The Condition Table <c>JSON</c> data from either some data source or cache.
+            </returns>
+            <Created>
+              <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+              <DateTime>03/07/2020 06:12 PM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Abstract.Invoker.HandleError(DevHorizons.Horus.LogEntry)">
+            <summary>
+               Handles the error.
+            </summary>
+            <param name="error">The error details.</param>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>08/11/2018 11:12 AM</DateTime>
+            </Created>
+        </member>
+        <member name="T:DevHorizons.Horus.Engine.Command">
+            <summary>
+               A class the holds all the required members for the <c>CSharp</c> command class.
+            </summary>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/02/2020 05:29 PM</DateTime>
+            </Created>
+            <seealso cref="T:DevHorizons.Horus.Internal.ICommand" />
+        </member>
+        <member name="F:DevHorizons.Horus.Engine.Command.scriptOptions">
+            <summary>
+               The options with the required Namespaces references for the Rosylyn script creation.
+            </summary>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>14/02/2020 11:00 AM</DateTime>
+            </Created>
+        </member>
+        <member name="F:DevHorizons.Horus.Engine.Command.plugins">
+            <summary>
+               The plugins extracted code string.
+            </summary>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>17/06/2020 04:40 PM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Command.#ctor">
+            <summary>
+               Initializes a new instance of the <see cref="T:DevHorizons.Horus.Engine.Command"/> class.
+            </summary>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/02/2020 05:29 PM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Command.InvokeCommand(System.String)">
+            <summary>
+               Invokes the specified <c>C#</c> command/script text in the runtime.
+            </summary>
+            <param name="cmd">The command/script text to be executed in the runtime.</param>
+            <returns>The return object as the result of the command execution in the runtime.</returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/02/2020 05:30 PM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Command.GetPluginsCodeString">
+            <summary>
+               Gets the plugins code string.
+            </summary>
+            <returns>The plugins code string.</returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>17/06/2020 03:55 PM</DateTime>
+            </Created>
+        </member>
+        <member name="T:DevHorizons.Horus.Engine.Invoker">
+            <summary>
+               The dynamic rules generator and invoker class.
+            </summary>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/02/2020 12:45 PM</DateTime>
+            </Created>
+            <seealso cref="T:DevHorizons.Horus.Abstract.Invoker" />
+        </member>
+        <member name="F:DevHorizons.Horus.Engine.Invoker.Delimiter">
+            <summary>
+               The delimiter character to terminate/separate the script command lines.
+            </summary>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/02/2020 01:58 PM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Invoker.#ctor">
+            <summary>
+               Initializes a new instance of the <see cref="T:DevHorizons.Horus.Engine.Invoker"/> class.
+            </summary>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>02/07/2020 11:41 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Invoker.ExecuteRule(System.String,System.String,System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+               Executes the rule and return the validated results as "<see cref="T:System.Collections.Generic.List`1" />" where "T" is "<see cref="T:System.Collections.Generic.IDictionary`2" />" (where "TKey" is a "<see cref="T:System.String" />" and "TValue" is an "<see cref="T:System.Object" />").
+            </summary>
+            <param name="group">The group.</param>
+            <param name="name">The name of the rule to be executed.</param>
+            <param name="inputs">The inputs data as "<see cref="T:System.Collections.Generic.IDictionary`2" />" where "TKey" is a "<see cref="T:System.String" />" and "TValue" is an "<see cref="T:System.String" />". Those inputs names must be covered inside the specified rule in the "Inputs" section.</param>
+            <returns>
+               The validated results as "<see cref="T:System.Collections.Generic.IDictionary`2" />" where "TKey" is a "<see cref="T:System.String" />" and "TValue" is an "<see cref="T:System.String" />".
+            </returns>
+            <Created>
+              <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+              <DateTime>18/02/2020 11:30 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Invoker.ExecuteRule(DevHorizons.Horus.Model.ConditionTable,System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            Executes the rule and return the output values as "<see cref="T:System.Collections.Generic.List`1" />" where "T" is "<see cref="T:System.Collections.Generic.IDictionary`2" />" (where "TKey" is a "<see cref="T:System.String" />" and "TValue" is an "<see cref="T:System.Object" />").
+            </summary>
+            <param name="conditionTable">The condition table.</param>
+            <param name="inputs">The inputs.</param>
+            <returns>
+            The validated results as "<see cref="T:System.Collections.Generic.IDictionary`2" />" where "TKey" is a "<see cref="T:System.String" />" and "TValue" is an "<see cref="T:System.Object" />".
+            </returns>
+            <Created>
+              <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+              <DateTime>08/10/2020 11:10 PM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Invoker.ExecuteCommand(System.String)">
+            <summary>
+               Executes the generated/parsed command/code from the specified rule.
+               <para>This method can be overridden by a derived class to change the behaviour/implementation of the method using the generated command/code by a new technique or different scripting library.</para>
+            </summary>
+            <param name="parsedCommand">The parsed/generated command string.</param>
+            <returns>
+               The validated results as "<see cref="T:System.Collections.Generic.IDictionary`2"/>" where "TKey" is a "<see cref="T:System.String"/>" and "TValue" is an "<see cref="T:System.Object"/>".
+            </returns>
+            <Created>
+              <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+              <DateTime>18/02/2020 11:49 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Invoker.GetOutputsDictionary(System.Collections.Generic.List{DevHorizons.Horus.Model.Variable})">
+            <summary>
+               Gets the result/outputs of the executed command as a dictionary.
+            </summary>
+            <param name="outputs">The outputs.</param>
+            <returns>The result/outputs of the executed command.</returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/02/2020 01:39 PM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Invoker.GetInputsAssignCommand(System.Collections.Generic.IDictionary{System.String,System.String},DevHorizons.Horus.Model.ConditionTable,System.Boolean)">
+            <summary>
+               Gets the parsed inputs command/script to be injected to the final command text.
+            </summary>
+            <param name="inputsValues">The inputs values.</param>
+            <param name="ct">The rule.</param>
+            <param name="assignDefault">if set to <c>true</c> don't validate for the input values and assign the default values.</param>
+            <returns>The parsed inputs command/script to be injected to the final command text.</returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/02/2020 01:40 PM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Invoker.AssignDefaultValues(System.Collections.Generic.IDictionary{System.String,System.String},DevHorizons.Horus.Model.ConditionTable)">
+            <summary>
+               Assigns the default values from the specified inputs Values.
+            </summary>
+            <param name="inputsValues">The inputs values.</param>
+            <param name="ct">The condition table.</param>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>28/01/2021 03:35 PM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Invoker.GetAssignedInputValue(DevHorizons.Horus.Model.Variable,System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+               Gets the assigned input value from the specified inputs Value. If not specified or the mapped variable not found, it will return the default value or null if allows null.
+            </summary>
+            <param name="input">The input.</param>
+            <param name="inputsValues">The inputs values.</param>
+            <returns>
+               The assigned input value from the specified inputs Value, default value or null.
+            </returns>
+            <Created>
+              <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+              <DateTime>28/01/2021 03:19 PM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Invoker.GetConditionTableParsedCommand(DevHorizons.Horus.Model.ConditionTable)">
+            <summary>
+               Gets the condition table operations as generated command script text to be injected to the final generated script.
+            </summary>
+            <param name="ct">The condition table.</param>
+            <returns>The condition table operations as generated command script text.</returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>17/06/2020 01:56 PM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Invoker.GetConditionTableParsedCommandOneDim(DevHorizons.Horus.Model.ConditionTable)">
+            <summary>
+               Gets the condition table operations as generated command script text with one/mono result only to be injected to the final generated script.
+            </summary>
+            <param name="ct">The condition table.</param>
+            <returns>The condition table operations as generated command script text.</returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>17/06/2020 01:56 PM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Invoker.GetConditionTableParsedCommandTwoDim(DevHorizons.Horus.Model.ConditionTable)">
+            <summary>
+               Gets the condition table operations as generated command script text as mutiple (two dimensional) results to be injected to the final generated script.
+            </summary>
+            <param name="ct">The condition table.</param>
+            <returns>The condition table operations as generated command script text.</returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>17/06/2020 01:56 PM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Invoker.GetVariablesDeclarations(System.Collections.Generic.List{DevHorizons.Horus.Model.Variable})">
+            <summary>
+               Gets the parsed variables command/script to be injected to the final command text.
+            </summary>
+            <param name="variables">The variables.</param>
+            <returns>
+            The parsed variables command/script to be injected to the final command text.
+            </returns>
+            <Created>
+              <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+              <DateTime>18/02/2020 01:41 PM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Invoker.GetDefaultValue(System.String,System.Object)">
+            <summary>
+               Gets the default value.
+            </summary>
+            <param name="type">The type.</param>
+            <param name="value">The value.</param>
+            <returns>
+               The default parsed value.
+            </returns>
+            <Created>
+              <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+              <DateTime>02/07/2020 09:56 PM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Invoker.GetFinalParsedCommand(DevHorizons.Horus.Model.ConditionTable,System.Collections.Generic.IDictionary{System.String,System.String},System.String)">
+            <summary>
+               Gets the final parsed/generated command script.
+            </summary>
+            <param name="ct">The rule.</param>
+            <param name="inputs">The inputs.</param>
+            <param name="ruleKey">The rule key.</param>
+            <returns>
+               The final parsed/generated command script.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/02/2020 01:39 PM</DateTime>
+            </Created>
+        </member>
+        <member name="T:DevHorizons.Horus.Engine.Plugins.ExtensionMethods">
+            <summary>
+               Defines the required extension methods which need to be injected with the dynamic script for the dynamic rules validation.
+            </summary>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/06/2020 11:50 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Plugins.ExtensionMethods.In(System.String,System.String[])">
+            <summary>
+               Check whether the specified value is in the specified range.
+            </summary>
+            <param name="value">The value to be validated/checked against a specfied range.</param>
+            <param name="range">The range of value as params <see cref="T:System.Array"/> of <see cref="T:System.String"/>.</param>
+            <returns>
+               <c>true</c> if specified value is in the specified range of values; otherwise it should return <c>false</c>.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/06/2020 11:50 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Plugins.ExtensionMethods.In(System.Char,System.Char[])">
+            <summary>
+               Check whether the specified value is in the specified range.
+            </summary>
+            <param name="value">The value to be validated/checked against a specfied range.</param>
+            <param name="range">The range of value as params <see cref="T:System.Array"/> of <see cref="T:System.Char"/>.</param>
+            <returns>
+               <c>true</c> if specified value is in the specified range of values; otherwise it should return <c>false</c>.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>04/12/2020 04:23 PM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Plugins.ExtensionMethods.In(System.Byte,System.Byte[])">
+            <summary>
+               Check whether the specified value is in the specified range.
+            </summary>
+            <param name="value">The value to be validated/checked against a specfied range.</param>
+            <param name="range">The range of value as params <see cref="T:System.Array"/> of <see cref="T:System.Byte"/>.</param>
+            <returns>
+               <c>true</c> if specified value is in the specified range of values; otherwise it should return <c>false</c>.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/06/2020 11:50 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Plugins.ExtensionMethods.In(System.SByte,System.SByte[])">
+            <summary>
+               Check whether the specified value is in the specified range.
+            </summary>
+            <param name="value">The value to be validated/checked against a specfied range.</param>
+            <param name="range">The range of value as params <see cref="T:System.Array"/> of <see cref="T:System.SByte"/>.</param>
+            <returns>
+               <c>true</c> if specified value is in the specified range of values; otherwise it should return <c>false</c>.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/06/2020 11:50 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Plugins.ExtensionMethods.In(System.Int16,System.Int16[])">
+            <summary>
+               Check whether the specified value is in the specified range.
+            </summary>
+            <param name="value">The value to be validated/checked against a specfied range.</param>
+            <param name="range">The range of value as params <see cref="T:System.Array"/> of <see cref="T:System.Int16"/>.</param>
+            <returns>
+               <c>true</c> if specified value is in the specified range of values; otherwise it should return <c>false</c>.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/06/2020 11:50 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Plugins.ExtensionMethods.In(System.UInt16,System.UInt16[])">
+            <summary>
+               Check whether the specified value is in the specified range.
+            </summary>
+            <param name="value">The value to be validated/checked against a specfied range.</param>
+            <param name="range">The range of value as params <see cref="T:System.Array"/> of <see cref="T:System.UInt16"/>.</param>
+            <returns>
+               <c>true</c> if specified value is in the specified range of values; otherwise it should return <c>false</c>.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/06/2020 11:50 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Plugins.ExtensionMethods.In(System.Int32,System.Int32[])">
+            <summary>
+               Check whether the specified value is in the specified range.
+            </summary>
+            <param name="value">The value to be validated/checked against a specfied range.</param>
+            <param name="range">The range of value as params <see cref="T:System.Array"/> of <see cref="T:System.Int32"/>.</param>
+            <returns>
+               <c>true</c> if specified value is in the specified range of values; otherwise it should return <c>false</c>.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/06/2020 11:50 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Plugins.ExtensionMethods.In(System.UInt32,System.UInt32[])">
+            <summary>
+               Check whether the specified value is in the specified range.
+            </summary>
+            <param name="value">The value to be validated/checked against a specfied range.</param>
+            <param name="range">The range of value as params <see cref="T:System.Array"/> of <see cref="T:System.UInt32"/>.</param>
+            <returns>
+               <c>true</c> if specified value is in the specified range of values; otherwise it should return <c>false</c>.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/06/2020 11:50 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Plugins.ExtensionMethods.In(System.Int64,System.Int64[])">
+            <summary>
+               Check whether the specified value is in the specified range.
+            </summary>
+            <param name="value">The value to be validated/checked against a specfied range.</param>
+            <param name="range">The range of value as params <see cref="T:System.Array"/> of <see cref="T:System.Int64"/>.</param>
+            <returns>
+               <c>true</c> if specified value is in the specified range of values; otherwise it should return <c>false</c>.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/06/2020 11:50 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Plugins.ExtensionMethods.In(System.UInt64,System.UInt64[])">
+            <summary>
+               Check whether the specified value is in the specified range.
+            </summary>
+            <param name="value">The value to be validated/checked against a specfied range.</param>
+            <param name="range">The range of value as params <see cref="T:System.Array"/> of <see cref="T:System.UInt64"/>.</param>
+            <returns>
+               <c>true</c> if specified value is in the specified range of values; otherwise it should return <c>false</c>.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/06/2020 11:50 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Plugins.ExtensionMethods.In(System.Single,System.Single[])">
+            <summary>
+               Check whether the specified value is in the specified range.
+            </summary>
+            <param name="value">The value to be validated/checked against a specfied range.</param>
+            <param name="range">The range of value as params <see cref="T:System.Array"/> of <see cref="T:System.Single"/>.</param>
+            <returns>
+               <c>true</c> if specified value is in the specified range of values; otherwise it should return <c>false</c>.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/06/2020 11:50 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Plugins.ExtensionMethods.In(System.Double,System.Double[])">
+            <summary>
+               Check whether the specified value is in the specified range.
+            </summary>
+            <param name="value">The value to be validated/checked against a specfied range.</param>
+            <param name="range">The range of value as params <see cref="T:System.Array"/> of <see cref="T:System.Double"/>.</param>
+            <returns>
+               <c>true</c> if specified value is in the specified range of values; otherwise it should return <c>false</c>.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/06/2020 11:50 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Plugins.ExtensionMethods.In(System.Decimal,System.Decimal[])">
+            <summary>
+               Check whether the specified value is in the specified range.
+            </summary>
+            <param name="value">The value to be validated/checked against a specfied range.</param>
+            <param name="range">The range of value as params <see cref="T:System.Array"/> of <see cref="T:System.Decimal"/>.</param>
+            <returns>
+               <c>true</c> if specified value is in the specified range of values; otherwise it should return <c>false</c>.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/06/2020 11:50 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Plugins.ExtensionMethods.In(System.DateTime,System.DateTime[])">
+            <summary>
+               Check whether the specified value is in the specified range.
+            </summary>
+            <param name="value">The value to be validated/checked against a specfied range.</param>
+            <param name="range">The range of value as params <see cref="T:System.Array"/> of <see cref="T:System.DateTime"/>.</param>
+            <returns>
+               <c>true</c> if specified value is in the specified range of values; otherwise it should return <c>false</c>.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/06/2020 11:50 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Plugins.ExtensionMethods.NotIn(System.String,System.String[])">
+            <summary>
+               Check whether the specified value is not in the specified range.
+            </summary>
+            <param name="value">The value to be validated/checked against a specfied range.</param>
+            <param name="range">The range of value as params <see cref="T:System.Array"/> of <see cref="T:System.String"/>.</param>
+            <returns>
+               <c>true</c> if specified value is not in the specified range of values; otherwise it should return <c>false</c>.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/06/2020 11:50 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Plugins.ExtensionMethods.NotIn(System.Char,System.Char[])">
+            <summary>
+               Check whether the specified value is not in the specified range.
+            </summary>
+            <param name="value">The value to be validated/checked against a specfied range.</param>
+            <param name="range">The range of value as params <see cref="T:System.Array"/> of <see cref="T:System.Char"/>.</param>
+            <returns>
+               <c>true</c> if specified value is not in the specified range of values; otherwise it should return <c>false</c>.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/06/2020 11:50 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Plugins.ExtensionMethods.NotIn(System.Byte,System.Byte[])">
+            <summary>
+               Check whether the specified value is not in the specified range.
+            </summary>
+            <param name="value">The value to be validated/checked against a specfied range.</param>
+            <param name="range">The range of value as params <see cref="T:System.Array"/> of <see cref="T:System.Byte"/>.</param>
+            <returns>
+               <c>true</c> if specified value is not in the specified range of values; otherwise it should return <c>false</c>.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/06/2020 11:50 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Plugins.ExtensionMethods.NotIn(System.SByte,System.SByte[])">
+            <summary>
+               Check whether the specified value is not in the specified range.
+            </summary>
+            <param name="value">The value to be validated/checked against a specfied range.</param>
+            <param name="range">The range of value as params <see cref="T:System.Array"/> of <see cref="T:System.SByte"/>.</param>
+            <returns>
+               <c>true</c> if specified value is not in the specified range of values; otherwise it should return <c>false</c>.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/06/2020 11:50 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Plugins.ExtensionMethods.NotIn(System.Int16,System.Int16[])">
+            <summary>
+               Check whether the specified value is not in the specified range.
+            </summary>
+            <param name="value">The value to be validated/checked against a specfied range.</param>
+            <param name="range">The range of value as params <see cref="T:System.Array"/> of <see cref="T:System.Int16"/>.</param>
+            <returns>
+               <c>true</c> if specified value is not in the specified range of values; otherwise it should return <c>false</c>.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/06/2020 11:50 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Plugins.ExtensionMethods.NotIn(System.UInt16,System.UInt16[])">
+            <summary>
+               Check whether the specified value is not in the specified range.
+            </summary>
+            <param name="value">The value to be validated/checked against a specfied range.</param>
+            <param name="range">The range of value as params <see cref="T:System.Array"/> of <see cref="T:System.UInt16"/>.</param>
+            <returns>
+               <c>true</c> if specified value is not in the specified range of values; otherwise it should return <c>false</c>.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/06/2020 11:50 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Plugins.ExtensionMethods.NotIn(System.Int32,System.Int32[])">
+            <summary>
+               Check whether the specified value is not in the specified range.
+            </summary>
+            <param name="value">The value to be validated/checked against a specfied range.</param>
+            <param name="range">The range of value as params <see cref="T:System.Array"/> of <see cref="T:System.Int32"/>.</param>
+            <returns>
+               <c>true</c> if specified value is not in the specified range of values; otherwise it should return <c>false</c>.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/06/2020 11:50 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Plugins.ExtensionMethods.NotIn(System.UInt32,System.UInt32[])">
+            <summary>
+               Check whether the specified value is not in the specified range.
+            </summary>
+            <param name="value">The value to be validated/checked against a specfied range.</param>
+            <param name="range">The range of value as params <see cref="T:System.Array"/> of <see cref="T:System.UInt32"/>.</param>
+            <returns>
+               <c>true</c> if specified value is not in the specified range of values; otherwise it should return <c>false</c>.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/06/2020 11:50 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Plugins.ExtensionMethods.NotIn(System.Int64,System.Int64[])">
+            <summary>
+               Check whether the specified value is not in the specified range.
+            </summary>
+            <param name="value">The value to be validated/checked against a specfied range.</param>
+            <param name="range">The range of value as params <see cref="T:System.Array"/> of <see cref="T:System.Int64"/>.</param>
+            <returns>
+               <c>true</c> if specified value is not in the specified range of values; otherwise it should return <c>false</c>.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/06/2020 11:50 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Plugins.ExtensionMethods.NotIn(System.UInt64,System.UInt64[])">
+            <summary>
+               Check whether the specified value is not in the specified range.
+            </summary>
+            <param name="value">The value to be validated/checked against a specfied range.</param>
+            <param name="range">The range of value as params <see cref="T:System.Array"/> of <see cref="T:System.UInt64"/>.</param>
+            <returns>
+               <c>true</c> if specified value is not in the specified range of values; otherwise it should return <c>false</c>.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/06/2020 11:50 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Plugins.ExtensionMethods.NotIn(System.Single,System.Single[])">
+            <summary>
+               Check whether the specified value is not in the specified range.
+            </summary>
+            <param name="value">The value to be validated/checked against a specfied range.</param>
+            <param name="range">The range of value as params <see cref="T:System.Array"/> of <see cref="T:System.Single"/>.</param>
+            <returns>
+               <c>true</c> if specified value is not in the specified range of values; otherwise it should return <c>false</c>.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/06/2020 11:50 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Plugins.ExtensionMethods.NotIn(System.Double,System.Double[])">
+            <summary>
+               Check whether the specified value is not in the specified range.
+            </summary>
+            <param name="value">The value to be validated/checked against a specfied range.</param>
+            <param name="range">The range of value as params <see cref="T:System.Array"/> of <see cref="T:System.Double"/>.</param>
+            <returns>
+               <c>true</c> if specified value is not in the specified range of values; otherwise it should return <c>false</c>.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/06/2020 11:50 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Plugins.ExtensionMethods.NotIn(System.Decimal,System.Decimal[])">
+            <summary>
+               Check whether the specified value is not in the specified range.
+            </summary>
+            <param name="value">The value to be validated/checked against a specfied range.</param>
+            <param name="range">The range of value as params <see cref="T:System.Array"/> of <see cref="T:System.Decimal"/>.</param>
+            <returns>
+               <c>true</c> if specified value is not in the specified range of values; otherwise it should return <c>false</c>.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/06/2020 11:50 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Plugins.ExtensionMethods.NotIn(System.DateTime,System.DateTime[])">
+            <summary>
+               Check whether the specified value is not in the specified range.
+            </summary>
+            <param name="value">The value to be validated/checked against a specfied range.</param>
+            <param name="range">The range of value as params <see cref="T:System.Array"/> of <see cref="T:System.DateTime"/>.</param>
+            <returns>
+               <c>true</c> if specified value is not in the specified range of values; otherwise it should return <c>false</c>.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/06/2020 11:50 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Plugins.ExtensionMethods.Between(System.Int16,System.Int16,System.Int16)">
+            <summary>
+               Check whether the specified value is greater than or equal the specified minimum value and less than or equal the specified maximum value.
+            </summary>
+            <param name="value">The value to validated/checked.</param>
+            <param name="minValue">The minimum value.</param>
+            <param name="maxValue">The maximum value.</param>
+            <returns>
+               <c>true</c> if the specified value is greater than or equal the specified minimum value and less than or equal the specified maximum value. Otherwise; <c>false</c>.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/06/2020 11:55 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Plugins.ExtensionMethods.Between(System.UInt16,System.UInt16,System.UInt16)">
+            <summary>
+               Check whether the specified value is greater than or equal the specified minimum value and less than or equal the specified maximum value.
+            </summary>
+            <param name="value">The value to validated/checked.</param>
+            <param name="minValue">The minimum value.</param>
+            <param name="maxValue">The maximum value.</param>
+            <returns>
+               <c>true</c> if the specified value is greater than or equal the specified minimum value and less than or equal the specified maximum value. Otherwise; <c>false</c>.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/06/2020 11:55 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Plugins.ExtensionMethods.Between(System.Int32,System.Int32,System.Int32)">
+            <summary>
+               Check whether the specified value is greater than or equal the specified minimum value and less than or equal the specified maximum value.
+            </summary>
+            <param name="value">The value to validated/checked.</param>
+            <param name="minValue">The minimum value.</param>
+            <param name="maxValue">The maximum value.</param>
+            <returns>
+               <c>true</c> if the specified value is greater than or equal the specified minimum value and less than or equal the specified maximum value. Otherwise; <c>false</c>.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/06/2020 11:55 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Plugins.ExtensionMethods.Between(System.UInt32,System.UInt32,System.UInt32)">
+            <summary>
+               Check whether the specified value is greater than or equal the specified minimum value and less than or equal the specified maximum value.
+            </summary>
+            <param name="value">The value to validated/checked.</param>
+            <param name="minValue">The minimum value.</param>
+            <param name="maxValue">The maximum value.</param>
+            <returns>
+               <c>true</c> if the specified value is greater than or equal the specified minimum value and less than or equal the specified maximum value. Otherwise; <c>false</c>.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/06/2020 11:55 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Plugins.ExtensionMethods.Between(System.Int64,System.Int64,System.Int64)">
+            <summary>
+               Check whether the specified value is greater than or equal the specified minimum value and less than or equal the specified maximum value.
+            </summary>
+            <param name="value">The value to validated/checked.</param>
+            <param name="minValue">The minimum value.</param>
+            <param name="maxValue">The maximum value.</param>
+            <returns>
+               <c>true</c> if the specified value is greater than or equal the specified minimum value and less than or equal the specified maximum value. Otherwise; <c>false</c>.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/06/2020 11:55 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Plugins.ExtensionMethods.Between(System.UInt64,System.UInt64,System.UInt64)">
+            <summary>
+               Check whether the specified value is greater than or equal the specified minimum value and less than or equal the specified maximum value.
+            </summary>
+            <param name="value">The value to validated/checked.</param>
+            <param name="minValue">The minimum value.</param>
+            <param name="maxValue">The maximum value.</param>
+            <returns>
+               <c>true</c> if the specified value is greater than or equal the specified minimum value and less than or equal the specified maximum value. Otherwise; <c>false</c>.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/06/2020 11:55 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Plugins.ExtensionMethods.Between(System.Single,System.Single,System.Single)">
+            <summary>
+               Check whether the specified value is greater than or equal the specified minimum value and less than or equal the specified maximum value.
+            </summary>
+            <param name="value">The value to validated/checked.</param>
+            <param name="minValue">The minimum value.</param>
+            <param name="maxValue">The maximum value.</param>
+            <returns>
+               <c>true</c> if the specified value is greater than or equal the specified minimum value and less than or equal the specified maximum value. Otherwise; <c>false</c>.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/06/2020 11:55 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Plugins.ExtensionMethods.Between(System.Double,System.Double,System.Double)">
+            <summary>
+               Check whether the specified value is greater than or equal the specified minimum value and less than or equal the specified maximum value.
+            </summary>
+            <param name="value">The value to validated/checked.</param>
+            <param name="minValue">The minimum value.</param>
+            <param name="maxValue">The maximum value.</param>
+            <returns>
+               <c>true</c> if the specified value is greater than or equal the specified minimum value and less than or equal the specified maximum value. Otherwise; <c>false</c>.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/06/2020 11:55 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Plugins.ExtensionMethods.Between(System.Decimal,System.Decimal,System.Decimal)">
+            <summary>
+               Check whether the specified value is greater than or equal the specified minimum value and less than or equal the specified maximum value.
+            </summary>
+            <param name="value">The value to validated/checked.</param>
+            <param name="minValue">The minimum value.</param>
+            <param name="maxValue">The maximum value.</param>
+            <returns>
+               <c>true</c> if the specified value is greater than or equal the specified minimum value and less than or equal the specified maximum value. Otherwise; <c>false</c>.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/06/2020 11:55 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Plugins.ExtensionMethods.Between(System.DateTime,System.DateTime,System.DateTime)">
+            <summary>
+               Check whether the specified value is greater than or equal the specified minimum value and less than or equal the specified maximum value.
+            </summary>
+            <param name="value">The value to validated/checked.</param>
+            <param name="minValue">The minimum value.</param>
+            <param name="maxValue">The maximum value.</param>
+            <returns>
+               <c>true</c> if the specified value is greater than or equal the specified minimum value and less than or equal the specified maximum value. Otherwise; <c>false</c>.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/06/2020 11:55 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Plugins.ExtensionMethods.NotBetween(System.Int16,System.Int16,System.Int16)">
+            <summary>
+               Check whether the specified value is not greater than or equal the specified minimum value and not less than or equal the specified maximum value.
+            </summary>
+            <param name="value">The value to validated/checked.</param>
+            <param name="minValue">The minimum value.</param>
+            <param name="maxValue">The maximum value.</param>
+            <returns>
+               <c>true</c> if the specified value is not greater than or equal the specified minimum value and not less than or equal the specified maximum value. Otherwise; <c>false</c>.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/06/2020 11:55 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Plugins.ExtensionMethods.NotBetween(System.UInt16,System.UInt16,System.UInt16)">
+            <summary>
+               Check whether the specified value is not greater than or equal the specified minimum value and not less than or equal the specified maximum value.
+            </summary>
+            <param name="value">The value to validated/checked.</param>
+            <param name="minValue">The minimum value.</param>
+            <param name="maxValue">The maximum value.</param>
+            <returns>
+               <c>true</c> if the specified value is not greater than or equal the specified minimum value and not less than or equal the specified maximum value. Otherwise; <c>false</c>.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/06/2020 11:55 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Plugins.ExtensionMethods.NotBetween(System.Int32,System.Int32,System.Int32)">
+            <summary>
+               Check whether the specified value is not greater than or equal the specified minimum value and not less than or equal the specified maximum value.
+            </summary>
+            <param name="value">The value to validated/checked.</param>
+            <param name="minValue">The minimum value.</param>
+            <param name="maxValue">The maximum value.</param>
+            <returns>
+               <c>true</c> if the specified value is not greater than or equal the specified minimum value and not less than or equal the specified maximum value. Otherwise; <c>false</c>.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/06/2020 11:55 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Plugins.ExtensionMethods.NotBetween(System.UInt32,System.UInt32,System.UInt32)">
+            <summary>
+               Check whether the specified value is not greater than or equal the specified minimum value and not less than or equal the specified maximum value.
+            </summary>
+            <param name="value">The value to validated/checked.</param>
+            <param name="minValue">The minimum value.</param>
+            <param name="maxValue">The maximum value.</param>
+            <returns>
+               <c>true</c> if the specified value is not greater than or equal the specified minimum value and not less than or equal the specified maximum value. Otherwise; <c>false</c>.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/06/2020 11:55 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Plugins.ExtensionMethods.NotBetween(System.Int64,System.Int64,System.Int64)">
+            <summary>
+               Check whether the specified value is not greater than or equal the specified minimum value and not less than or equal the specified maximum value.
+            </summary>
+            <param name="value">The value to validated/checked.</param>
+            <param name="minValue">The minimum value.</param>
+            <param name="maxValue">The maximum value.</param>
+            <returns>
+               <c>true</c> if the specified value is not greater than or equal the specified minimum value and not less than or equal the specified maximum value. Otherwise; <c>false</c>.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/06/2020 11:55 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Plugins.ExtensionMethods.NotBetween(System.UInt64,System.UInt64,System.UInt64)">
+            <summary>
+               Check whether the specified value is not greater than or equal the specified minimum value and not less than or equal the specified maximum value.
+            </summary>
+            <param name="value">The value to validated/checked.</param>
+            <param name="minValue">The minimum value.</param>
+            <param name="maxValue">The maximum value.</param>
+            <returns>
+               <c>true</c> if the specified value is not greater than or equal the specified minimum value and not less than or equal the specified maximum value. Otherwise; <c>false</c>.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/06/2020 11:55 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Plugins.ExtensionMethods.NotBetween(System.Single,System.Single,System.Single)">
+            <summary>
+               Check whether the specified value is not greater than or equal the specified minimum value and not less than or equal the specified maximum value.
+            </summary>
+            <param name="value">The value to validated/checked.</param>
+            <param name="minValue">The minimum value.</param>
+            <param name="maxValue">The maximum value.</param>
+            <returns>
+               <c>true</c> if the specified value is not greater than or equal the specified minimum value and not less than or equal the specified maximum value. Otherwise; <c>false</c>.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/06/2020 11:55 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Plugins.ExtensionMethods.NotBetween(System.Double,System.Double,System.Double)">
+            <summary>
+               Check whether the specified value is not greater than or equal the specified minimum value and not less than or equal the specified maximum value.
+            </summary>
+            <param name="value">The value to validated/checked.</param>
+            <param name="minValue">The minimum value.</param>
+            <param name="maxValue">The maximum value.</param>
+            <returns>
+               <c>true</c> if the specified value is not greater than or equal the specified minimum value and not less than or equal the specified maximum value. Otherwise; <c>false</c>.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/06/2020 11:55 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Plugins.ExtensionMethods.NotBetween(System.Decimal,System.Decimal,System.Decimal)">
+            <summary>
+               Check whether the specified value is not greater than or equal the specified minimum value and not less than or equal the specified maximum value.
+            </summary>
+            <param name="value">The value to validated/checked.</param>
+            <param name="minValue">The minimum value.</param>
+            <param name="maxValue">The maximum value.</param>
+            <returns>
+               <c>true</c> if the specified value is not greater than or equal the specified minimum value and not less than or equal the specified maximum value. Otherwise; <c>false</c>.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/06/2020 11:55 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Plugins.ExtensionMethods.NotBetween(System.DateTime,System.DateTime,System.DateTime)">
+            <summary>
+               Check whether the specified value is not greater than or equal the specified minimum value and not less than or equal the specified maximum value.
+            </summary>
+            <param name="value">The value to validated/checked.</param>
+            <param name="minValue">The minimum value.</param>
+            <param name="maxValue">The maximum value.</param>
+            <returns>
+               <c>true</c> if the specified value is not greater than or equal the specified minimum value and not less than or equal the specified maximum value. Otherwise; <c>false</c>.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/06/2020 11:55 AM</DateTime>
+            </Created>
+        </member>
+        <member name="T:DevHorizons.Horus.Engine.Utility">
+            <summary>
+               A static class to hold all the utility/helper methods for the Conditions Engine.
+            </summary>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>28/01/2021 02:32 PM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Utility.GetTypeFromAlias(System.String)">
+            <summary>
+               Gets the type from value data type's alias name.
+            </summary>
+            <param name="alias">The alias name of a value data type. Eg. int, float, string.</param>
+            <returns>
+               The system type from the alias name as an instance of "<see cref="T:System.Type"/>".
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>28/01/2021 02:31 PM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Utility.GetDefaultValueFromAlias(System.String)">
+            <summary>
+               Gets the default value from value data type's alias name.
+            </summary>
+            <param name="alias">The alias name of a value data type. Eg. int, float, string.</param>
+            <returns>
+               The default value from the alias name as an "<see cref="T:System.Object"/>".
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>28/01/2021 02:49 PM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Engine.Utility.ValidateRule(System.Collections.Generic.List{System.Collections.Generic.Dictionary{System.String,System.String}},System.Collections.Generic.List{System.Collections.Generic.Dictionary{System.String,System.Object}})">
+            <summary>
+               Validates the rule by comparing the specified actual results with the specified expected outputs.
+            </summary>
+            <param name="expectedOutputs">The expected outputs.</param>
+            <param name="actualResults">The actual results.</param>
+            <returns>
+               <c>true</c> if the rule has been validated successfully, otherwise, <c>false</c>.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>28/01/2021 09:11 PM</DateTime>
+            </Created>
+        </member>
+        <member name="T:DevHorizons.Horus.Interfaces.IInvoker">
+            <summary>
+            Defines all the required members for the invoker classes.
+            </summary>
+            <Created>
+              <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+              <DateTime>18/02/2020 11:28 AM</DateTime>
+            </Created>
+        </member>
+        <member name="T:DevHorizons.Horus.Interfaces.IInvoker.ErrorRaisedHandler">
+            <summary>
+               The error raised delegate to handle all the raised errors and or for logging them if required.
+            </summary>
+            <param name="error">The error raised as an instance of "<see cref="T:DevHorizons.Horus.LogEntry"/>".</param>
+            <Created>
+              <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+              <DateTime>18/02/2020 11:29 AM</DateTime>
+            </Created>
+        </member>
+        <member name="T:DevHorizons.Horus.Interfaces.IInvoker.CacheParsedCommandHandler">
+            <summary>
+               Caches parsed command generated from the passed JSON data.
+               <para>This method will be triggered only if the "CommandCached" property is marked as <c>true</c> inside the rule's JSON data.</para>
+               <para>This method needs to be implemented by the caller/consumer application.</para>
+            </summary>
+            <param name="ruleKey">The unique key of the specified rule.</param>
+            <param name="parsedCmd">The parsed command generated from the passed JSON data.</param>
+            <Created>
+              <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+              <DateTime>19/02/2020 11:48 AM</DateTime>
+            </Created>
+        </member>
+        <member name="T:DevHorizons.Horus.Interfaces.IInvoker.GetCachedParsedCommandHandler">
+            <summary>
+               Gets the cached parsed command generated from the passed JSON data. This method needs to be implemented by the caller/consumer application.
+               <para>This method will be triggered only if the "CommandCached" property is marked as <c>true</c> inside the rule's JSON data.</para>
+               <para>This method needs to be implemented by the caller/consumer application.</para>
+            </summary>
+            <param name="ruleKey">The unique key of the specified rule.</param>
+            <returns>
+               The cached parsed command generated from the passed JSON data.
+            </returns>
+            <Created>
+              <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+              <DateTime>18/02/2020 11:39 AM</DateTime>
+            </Created>
+        </member>
+        <member name="T:DevHorizons.Horus.Interfaces.IInvoker.CacheExecutionValueHandler">
+            <summary>
+               Caches the execution value/result after executing a successful command generated from the specified rule.
+               <para>This method will be triggered only if the "ValueCached" property is marked as <c>true</c> inside the rule's JSON data.</para>
+               <para>The "ValueCached" property should only marked as <c>true</c> if we are pretty sure that this rule can be called over and over by the same inputs.</para>
+               <para>This method needs to be implemented by the caller/consumer application.</para>
+            </summary>
+            <param name="ruleKey">The unique key of the specified rule.</param>
+            <param name="inputs">The inputs values to be combined with the rule key in the cache to distinguish the cached values by different inputs for the same rule.</param>
+            <param name="ruleValue">The rule value.</param>
+            <param name="flushCache">if set to <c>true</c> [flush all the cached execution values for this rule].</param>
+            <Created>
+              <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+              <DateTime>18/02/2020 11:45 AM</DateTime>
+            </Created>
+        </member>
+        <member name="T:DevHorizons.Horus.Interfaces.IInvoker.GetCachedExecutionValueHandler">
+            <summary>
+               Gets the cached execution value/result after executing a successful command generated from the specified rule.
+               <para>This method will be triggered only if the "ValueCached" property is marked as <c>true</c> inside the rule's JSON data.</para>
+               <para>The "ValueCached" property should only marked as <c>true</c> if we are pretty sure that this rule can be called over and over by the same inputs.</para>
+               <para>This method needs to be implemented by the caller/consumer application.</para>
+            </summary>
+            <param name="ruleKey">The unique key of the specified rule.</param>
+            <param name="inputs">The inputs values to be combined with the rule key in the cache to distinguish the cached values by different inputs for the same rule.</param>
+            <returns>
+               The cached execution value/result after executing a successful command generated from the specified rule.
+            </returns>
+            <Created>
+              <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+              <DateTime>18/02/2020 11:45 AM</DateTime>
+            </Created>
+        </member>
+        <member name="T:DevHorizons.Horus.Interfaces.IInvoker.CacheConditionTableHandler">
+            <summary>
+               Called when caches the Condition Table.
+            </summary>
+            <param name="conditionTable">The Condition Table.</param>
+            <Created>
+              <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+              <DateTime>02/07/2020 05:08 PM</DateTime>
+            </Created>
+        </member>
+        <member name="T:DevHorizons.Horus.Interfaces.IInvoker.GetCachedConditionTableHandler">
+            <summary>
+               Called when [get the cached condition table].
+            </summary>
+            <returns>
+               Returns the cached condition table.
+            </returns>
+            <Created>
+              <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+              <DateTime>02/07/2020 05:09 PM</DateTime>
+            </Created>
+        </member>
+        <member name="T:DevHorizons.Horus.Interfaces.IInvoker.GetConditionTableFromSourceHandler">
+            <summary>
+               Called when [get the Condition Table from either some data source or cache].
+            </summary>
+            <param name="group">The group name.</param>
+            <param name="name">The rule/condition table's name.</param>
+            <returns>
+               The Condition Table from either some data source or cache.
+            </returns>
+            <Created>
+              <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+              <DateTime>03/07/2020 05:58 PM</DateTime>
+            </Created>
+        </member>
+        <member name="E:DevHorizons.Horus.Interfaces.IInvoker.ErrorRaised">
+            <summary>
+               Occurs when [error raised].
+            </summary>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/02/2020 12:38 PM</DateTime>
+            </Created>
+        </member>
+        <member name="E:DevHorizons.Horus.Interfaces.IInvoker.CacheParsedCommand">
+            <summary>
+               Occurs when [on cache parsed command] which is handled by "<see cref="M:DevHorizons.Horus.Interfaces.IInvoker.OnCacheParsedCommand(System.String,System.String)"/>".
+            </summary>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>19/02/2020 12:27 PM</DateTime>
+            </Created>
+        </member>
+        <member name="E:DevHorizons.Horus.Interfaces.IInvoker.GetCachedParsedCommand">
+            <summary>
+               Occurs when [on get cached parsed command] which is handled by "<see cref="M:DevHorizons.Horus.Interfaces.IInvoker.OnGetCachedParsedCommand(System.String)"/>".
+            </summary>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>19/02/2020 01:44 PM</DateTime>
+            </Created>
+        </member>
+        <member name="E:DevHorizons.Horus.Interfaces.IInvoker.CacheExecutionValue">
+            <summary>
+               Occurs when [on cache execution value] which is handled by "<see cref="M:DevHorizons.Horus.Interfaces.IInvoker.OnCacheExecutionValue(System.String,System.Collections.Generic.IDictionary{System.String,System.String},System.Collections.Generic.List{System.Collections.Generic.Dictionary{System.String,System.Object}},System.Boolean)"/>".
+            </summary>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>19/02/2020 01:44 PM</DateTime>
+            </Created>
+        </member>
+        <member name="E:DevHorizons.Horus.Interfaces.IInvoker.GetCachedExecutionValue">
+            <summary>
+               Occurs when [on get cached execution value] which is handled by "<see cref="M:DevHorizons.Horus.Interfaces.IInvoker.OnGetCachedExecutionValue(System.String,System.Collections.Generic.IDictionary{System.String,System.String})"/>".
+            </summary>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>19/02/2020 01:45 PM</DateTime>
+            </Created>
+        </member>
+        <member name="E:DevHorizons.Horus.Interfaces.IInvoker.GetConditionTableFromSource">
+            <summary>
+               Occurs when [get the Condition Table from either some data source or cache] which is handled by "<see cref="M:DevHorizons.Horus.Interfaces.IInvoker.OnGetConditionTableFromSource(System.String,System.String)"/>".
+            </summary>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>03/07/2020 05:58 PM</DateTime>
+            </Created>
+        </member>
+        <member name="P:DevHorizons.Horus.Interfaces.IInvoker.Errors">
+            <summary>
+               Gets the raised errors list as "<see cref="T:System.Collections.Generic.List`1"/>" of ""<see cref="T:DevHorizons.Horus.LogEntry"/>.
+            </summary>
+            <value>
+               The raised errors.
+            </value>
+            <Created>
+              <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+              <DateTime>02/11/2018 05:39 PM</DateTime>
+            </Created>
+        </member>
+        <member name="P:DevHorizons.Horus.Interfaces.IInvoker.FailOverGroup">
+            <summary>
+               Gets or sets the fail over group. This group will be used to search for a rule matching it if not found a match for the primary one.
+            </summary>
+            <value>
+            The fail over group.
+            </value>
+            <Created>
+              <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+              <DateTime>06/07/2020 05:53 PM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Interfaces.IInvoker.GetRuleKey(DevHorizons.Horus.Model.ConditionTable)">
+            <summary>
+               Gets the rule key.
+            </summary>
+            <param name="ct">The ct.</param>
+            <returns>
+                The rule key.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>13/10/2020 06:43 PM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Interfaces.IInvoker.GetRuleKey(System.String,System.String)">
+            <summary>
+               Gets the rule key.
+            </summary>
+            <param name="group">The group.</param>
+            <param name="name">The name.</param>
+            <returns>
+                The rule key.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>13/10/2020 06:48 PM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Interfaces.IInvoker.ClearErrors">
+            <summary>
+               Clears the errors list.
+            </summary>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>02/11/2018 09:48 PM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Interfaces.IInvoker.ExecuteRule(System.String,System.String,System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+               Executes the rule and return the output values as "<see cref="T:System.Collections.Generic.List`1" />" where "T" is "<see cref="T:System.Collections.Generic.IDictionary`2" />" (where "TKey" is a "<see cref="T:System.String" />" and "TValue" is an "<see cref="T:System.Object" />").
+            </summary>
+            <param name="group">The group.</param>
+            <param name="ruleName">The name of the rule to be executed.</param>
+            <param name="inputs">The inputs data as "<see cref="T:System.Collections.Generic.IDictionary`2" />" where "TKey" is a "<see cref="T:System.String" />" and "TValue" is an "<see cref="T:System.String" />". Those inputs names must be covered inside the specified rule in the "Inputs" section.</param>
+            <returns>
+               The validated results as "<see cref="T:System.Collections.Generic.List`1" />" where "T" is "<see cref="T:System.Collections.Generic.IDictionary`2" />" (where "TKey" is a "<see cref="T:System.String" />" and "TValue" is an "<see cref="T:System.Object" />").
+            </returns>
+            <Created>
+              <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+              <DateTime>02/07/2020 12:02 PM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Interfaces.IInvoker.ExecuteRule(DevHorizons.Horus.Model.ConditionTable,System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            Executes the rule and return the output values as "<see cref="T:System.Collections.Generic.List`1" />" where "T" is "<see cref="T:System.Collections.Generic.IDictionary`2" />" (where "TKey" is a "<see cref="T:System.String" />" and "TValue" is an "<see cref="T:System.Object" />").
+            </summary>
+            <param name="conditionTable">The condition table.</param>
+            <param name="inputs">The inputs.</param>
+            <returns>
+               The validated results as "<see cref="T:System.Collections.Generic.List`1" />" where "T" is "<see cref="T:System.Collections.Generic.IDictionary`2" />" (where "TKey" is a "<see cref="T:System.String" />" and "TValue" is an "<see cref="T:System.Object" />").
+            </returns>
+            <Created>
+              <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+              <DateTime>08/10/2020 11:10 PM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Interfaces.IInvoker.OnCacheParsedCommand(System.String,System.String)">
+            <summary>
+               Caches parsed command generated from the passed JSON data.
+               <para>This method will be triggered only if the "CommandCached" property is marked as <c>true</c> inside the rule's JSON data.</para>
+               <para>This method needs to be implemented by the caller/consumer application.</para>
+            </summary>
+            <param name="ruleKey">The unique key of the specified rule.</param>
+            <param name="parsedCmd">The parsed command generated from the passed JSON data.</param>
+            <Created>
+              <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+              <DateTime>18/02/2020 11:38 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Interfaces.IInvoker.OnErrorRaised(DevHorizons.Horus.LogEntry)">
+            <summary>
+               Caches parsed command generated from the passed <c>JSON</c> data.
+            </summary>
+            <param name="error">The error details as an instance of <see cref="T:DevHorizons.Horus.LogEntry"/>.</param>
+            <Created>
+              <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+              <DateTime>18/02/2020 11:38 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Interfaces.IInvoker.OnGetCachedParsedCommand(System.String)">
+            <summary>
+               Gets the cached parsed command generated from the passed Condition Table. This method needs to be implemented by the caller/consumer application.
+               <para>This method will be triggered only if the "CommandCached" property is marked as <c>true</c> inside the rule's JSON data.</para>
+               <para>This method needs to be implemented by the caller/consumer application.</para>
+            </summary>
+            <param name="ruleKey">The unique key of the specified rule.</param>
+            <returns>
+               The cached parsed command generated from the passed JSON data.
+            </returns>
+            <Created>
+              <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+              <DateTime>18/02/2020 11:39 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Interfaces.IInvoker.OnCacheExecutionValue(System.String,System.Collections.Generic.IDictionary{System.String,System.String},System.Collections.Generic.List{System.Collections.Generic.Dictionary{System.String,System.Object}},System.Boolean)">
+            <summary>
+               Caches the execution value/result after executing a successful command generated from the specified rule.
+               <para>This method will be triggered only if the "ValueCached" property is marked as <c>true</c> inside the rule's JSON data.</para>
+               <para>The "ValueCached" property should only marked as <c>true</c> if we are pretty sure that this rule can be called over and over by the same inputs.</para>
+               <para>This method needs to be implemented by the caller/consumer application.</para>
+            </summary>
+            <param name="ruleKey">The unique key of the specified rule.</param>
+            <param name="inputs">The inputs values to be combined with the rule key in the cache to distinguish the cached values by different inputs for the same rule.</param>
+            <param name="ruleValue">The rule's execution/output values.</param>
+            <param name="flushCache">if set to <c>true</c> [flush all the cached execution values for this rule].</param>
+            <Created>
+              <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+              <DateTime>18/02/2020 11:41 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Interfaces.IInvoker.OnGetConditionTableFromSource(System.String,System.String)">
+            <summary>
+               Called when [get the Condition Table from either some data source or cache].
+            </summary>
+            <param name="group">The group name.</param>
+            <param name="name">The rule/condition table's name.</param>
+            <returns>
+               The Condition Table from either some data source or cache.
+            </returns>
+            <Created>
+              <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+              <DateTime>03/07/2020 06:09 PM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Interfaces.IInvoker.OnGetCachedExecutionValue(System.String,System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+               Gets the cached execution value/result after executing a successful command generated from the specified rule.
+               <para>This method will be triggered only if the "ValueCached" property is marked as <c>true</c> inside the rule's JSON data.</para>
+               <para>The "ValueCached" property should only marked as <c>true</c> if we are pretty sure that this rule can be called over and over by the same inputs.</para>
+               <para>This method needs to be implemented by the caller/consumer application.</para>
+            </summary>
+            <param name="ruleKey">The unique key of the specified rule.</param>
+            <param name="inputs">The inputs values to be combined with the rule key in the cache to distinguish the cached values by different inputs for the same rule.</param>
+            <returns>
+               The cached execution value/result after executing a successful command generated from the specified rule.
+            </returns>
+            <Created>
+              <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+              <DateTime>18/02/2020 11:45 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Interfaces.IInvoker.ExecuteCommand(System.String)">
+            <summary>
+               Executes the generated/parsed command/code from the specified rule.
+               <para>This method can be overridden by a derived class to change the behaviour/implementation of the method using the generated command/code by a new technique or different scripting library.</para>
+            </summary>
+            <param name="parsedCommand">The parsed/generated command string.</param>
+            <returns>
+               The validated results as "<see cref="T:System.Collections.Generic.List`1" />" where "T" is "<see cref="T:System.Collections.Generic.IDictionary`2" />" (where "TKey" is a "<see cref="T:System.String" />" and "TValue" is an "<see cref="T:System.Object" />").
+            </returns>
+            <Created>
+              <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+              <DateTime>18/02/2020 11:49 AM</DateTime>
+            </Created>
+        </member>
+        <member name="T:DevHorizons.Horus.Internal.ExtensionMethods">
+            <summary>
+               A class holds all the required extension methods to support the project.
+            </summary>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>08/12/2020 10:08 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Internal.ExtensionMethods.ReplaceMaskedDateTime(System.String)">
+            <summary>
+               Get the masked date time with a parsed C# syntax.
+            </summary>
+            <param name="input">The input string.</param>
+            <returns>
+               The masked date time with a parsed C# syntax.
+            </returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>07/12/2020 05:23 PM</DateTime>
+            </Created>
+        </member>
+        <member name="T:DevHorizons.Horus.Internal.ICommand">
+            <summary>
+               An interface holds the required members for the command template.
+            </summary>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>19/02/2020 09:59 AM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.Internal.ICommand.InvokeCommand(System.String)">
+            <summary>
+               Invokes the generated/parses command string and return the result as object value.
+            </summary>
+            <param name="cmd">The command.</param>
+            <returns>The result of the invoked command.</returns>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>19/02/2020 09:58 AM</DateTime>
+            </Created>
+        </member>
+        <member name="T:DevHorizons.Horus.LogEntry">
+            <summary>
+               A class defines all the needed members for the logged record.
+            </summary>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>02/11/2018 05:33 PM</DateTime>
+            </Created>
+        </member>
+        <member name="M:DevHorizons.Horus.LogEntry.#ctor">
+            <summary>
+               Initializes a new instance of the <see cref="T:DevHorizons.Horus.LogEntry"/> class.
+            </summary>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>02/11/2018 05:34 PM</DateTime>
+            </Created>
+        </member>
+        <member name="P:DevHorizons.Horus.LogEntry.Number">
+            <summary>
+               Gets or sets the log entry number.
+            </summary>
+            <value>
+               The log entry number.
+            </value>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>02/11/2018 05:36 PM</DateTime>
+            </Created>
+        </member>
+        <member name="P:DevHorizons.Horus.LogEntry.LogLevel">
+            <summary>
+               Gets or sets the log level.
+            </summary>
+            <value>
+               The log level.
+            </value>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>14/08/2020 04:24 PM</DateTime>
+            </Created>
+        </member>
+        <member name="P:DevHorizons.Horus.LogEntry.CreatedOn">
+            <summary>
+               Gets or sets the UTC/GMT date/time of the raised log.
+            </summary>
+            <value>
+               The UTC/GMT date/time of the raised log.
+            </value>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>12/11/2018 02:24 PM</DateTime>
+            </Created>
+        </member>
+        <member name="P:DevHorizons.Horus.LogEntry.Source">
+            <summary>
+               Gets or sets the action source. E.g. Specific constructor or method.
+            </summary>
+            <value>
+               The action source.
+            </value>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>02/11/2018 05:38 PM</DateTime>
+            </Created>
+        </member>
+        <member name="P:DevHorizons.Horus.LogEntry.Description">
+            <summary>
+               Gets or sets the entry action Description.
+            </summary>
+            <value>
+               The entry Description.
+            </value>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>02/11/2018 05:36 PM</DateTime>
+            </Created>
+        </member>
+        <member name="P:DevHorizons.Horus.LogEntry.Message">
+            <summary>
+               Gets or sets the log entry message.
+            </summary>
+            <value>
+               The log entry message.
+            </value>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>02/11/2018 05:36 PM</DateTime>
+            </Created>
+        </member>
+        <member name="P:DevHorizons.Horus.LogEntry.Environment">
+            <summary>
+               Gets or sets the host environment name.
+            </summary>
+            <value>
+               The host environment name.
+            </value>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>14/08/2020 03:11 PM</DateTime>
+            </Created>
+        </member>
+        <member name="P:DevHorizons.Horus.LogEntry.RequestUrl">
+            <summary>
+               Gets or sets the current request <c>URL</c> if applicable.
+            </summary>
+            <value>
+               The request <c>URL</c>.
+            </value>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>13/08/2020 02:00 PM</DateTime>
+            </Created>
+        </member>
+        <member name="P:DevHorizons.Horus.LogEntry.SourceMachine">
+            <summary>
+               Gets or sets the source machine/server name.
+            </summary>
+            <value>
+               The stack trace.
+            </value>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>12/11/2018 02:24 PM</DateTime>
+            </Created>
+        </member>
+        <member name="P:DevHorizons.Horus.LogEntry.CreatedBy">
+            <summary>
+               Gets or sets the name of user who created/raised the log.
+            </summary>
+            <value>
+              The the user name.
+            </value>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>13/08/2020 02:39 PM</DateTime>
+            </Created>
+        </member>
+        <member name="P:DevHorizons.Horus.LogEntry.Exception">
+            <summary>
+               Gets or sets the raised exception.
+            </summary>
+            <value>
+               The raised exception.
+            </value>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>02/11/2018 05:37 PM</DateTime>
+            </Created>
+        </member>
+        <member name="P:DevHorizons.Horus.LogEntry.StackTrace">
+            <summary>
+               Gets or sets the stack trace.
+            </summary>
+            <value>
+               The stack trace.
+            </value>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>12/11/2018 02:24 PM</DateTime>
+            </Created>
+        </member>
+        <member name="T:DevHorizons.Horus.Model.CachedConditionTables">
+            <summary>
+               The container of the cached condition tables in the memory.
+            </summary>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>02/07/2020 01:27 PM</DateTime>
+            </Created>
+        </member>
+        <member name="P:DevHorizons.Horus.Model.CachedConditionTables.ConditionTables">
+            <summary>
+               Gets the list of the rules structures.
+            </summary>
+            <value>
+            The rules.
+            </value>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>19/02/2020 10:44 AM</DateTime>
+            </Created>
+        </member>
+        <member name="T:DevHorizons.Horus.Model.ConditionTable">
+            <summary>
+               The Condition Table definition which will be extracted from the rule set JSON data.
+               <para> The condition table is an extension of the decision table with advanced/complex rules/conditions.</para>
+            </summary>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>17/06/2020 01:29 PM</DateTime>
+            </Created>
+        </member>
+        <member name="P:DevHorizons.Horus.Model.ConditionTable.Name">
+            <summary>
+               Gets or sets the Decision Table name.
+            </summary>
+            <value>
+               The Decision Table name.
+            </value>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/02/2020 05:39 PM</DateTime>
+            </Created>
+        </member>
+        <member name="P:DevHorizons.Horus.Model.ConditionTable.Group">
+            <summary>
+               Gets or sets the group name.
+            </summary>
+            <value>
+               The group name.
+            </value>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>02/07/2020 08:41 PM</DateTime>
+            </Created>
+        </member>
+        <member name="P:DevHorizons.Horus.Model.ConditionTable.ResetCache">
+            <summary>
+               Gets or sets a value indicating whether [reset the cache for this rule only once], the next time attempting to call this rules.
+               <para>This will be managed by the <c>"DevHorizons.Horus.WebApi"</c> project and no user should explicitly alter it.</para>
+            </summary>
+            <value>
+               If set to <c>true</c> the entire cache will be flushed for this rule with the next execution only and then it will be automatically set to <c>false</c> again.
+            </value>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>06/07/2020 11:37 AM</DateTime>
+            </Created>
+        </member>
+        <member name="P:DevHorizons.Horus.Model.ConditionTable.DataCached">
+            <summary>
+               Gets or sets a value indicating whether the whole rule design/body can be cached.
+               <para>By default the rule will be cached unless it is explicitly set to <c>false</c>.</para>
+            </summary>
+            <value>
+              <c>null</c> or <c>true</c>, cache the whole rule; otherwise, <c>false</c>.
+            </value>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>19/02/2020 10:37 AM</DateTime>
+            </Created>
+        </member>
+        <member name="P:DevHorizons.Horus.Model.ConditionTable.CommandCached">
+            <summary>
+               Gets or sets a value indicating whether the generated/parsed command can be cached.
+            </summary>
+            <value>
+              <c>true</c> if [command cached]; otherwise, <c>false</c>.
+            </value>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>19/02/2020 10:37 AM</DateTime>
+            </Created>
+        </member>
+        <member name="P:DevHorizons.Horus.Model.ConditionTable.ValueCached">
+            <summary>
+                Gets or sets a value indicating whether the return values of the rule can be cached as unique cache for each different/unique inputs.
+            </summary>
+            <value>
+              <c>true</c> if [value cached]; otherwise, <c>false</c>.
+            </value>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>19/02/2020 10:38 AM</DateTime>
+            </Created>
+        </member>
+        <member name="P:DevHorizons.Horus.Model.ConditionTable.TwoDimResults">
+            <summary>
+               Gets or sets a value indicating whether the rule's executiona output/result will be [two dimensional results] as a collection of "<see cref="T:System.Collections.Generic.ICollection`1"/>" instead of a single one.
+            </summary>
+            <value>
+              If set to <c>true</c>, the output/result of the rule's exection will be a collection of "<see cref="T:System.Collections.Generic.ICollection`1"/>", otherwise, the out put will be a single  "<see cref="T:System.Collections.Generic.ICollection`1"/>".
+            </value>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>27/01/2021 10:38 AM</DateTime>
+            </Created>
+        </member>
+        <member name="P:DevHorizons.Horus.Model.ConditionTable.Description">
+            <summary>
+               Gets or sets the rule's description.
+            </summary>
+            <value>
+               The rule's description.
+            </value>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>19/02/2020 10:37 AM</DateTime>
+            </Created>
+        </member>
+        <member name="P:DevHorizons.Horus.Model.ConditionTable.Inputs">
+            <summary>
+               Gets or sets the inputs.
+            </summary>
+            <value>
+            The inputs.
+            </value>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/02/2020 05:39 PM</DateTime>
+            </Created>
+        </member>
+        <member name="P:DevHorizons.Horus.Model.ConditionTable.Outputs">
+            <summary>
+               Gets or sets the outputs.
+            </summary>
+            <value>
+            The outputs.
+            </value>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/02/2020 05:39 PM</DateTime>
+            </Created>
+        </member>
+        <member name="P:DevHorizons.Horus.Model.ConditionTable.Decisions">
+            <summary>
+               Gets or sets the decisions.
+            </summary>
+            <value>
+            The decisions.
+            </value>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/02/2020 05:39 PM</DateTime>
+            </Created>
+        </member>
+        <member name="T:DevHorizons.Horus.Model.DecisionTableCondition">
+            <summary>
+               The Decision Table Condition which will be extracted from the rule set JSON data.
+            </summary>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/02/2020 05:23 PM</DateTime>
+            </Created>
+        </member>
+        <member name="P:DevHorizons.Horus.Model.DecisionTableCondition.Conditions">
+            <summary>
+               Gets or sets the list of the conditions as some assigned values to be compared with the input data.
+            </summary>
+            <value>
+               The conditions.
+            </value>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/02/2020 05:24 PM</DateTime>
+            </Created>
+        </member>
+        <member name="P:DevHorizons.Horus.Model.DecisionTableCondition.Return">
+            <summary>
+               Gets or sets the return values in case of the condition is validated.
+            </summary>
+            <value>
+             The return values in case of the condition is validated.
+            </value>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>18/02/2020 05:24 PM</DateTime>
+            </Created>
+        </member>
+        <member name="T:DevHorizons.Horus.Model.Variable">
+            <summary>
+               The variable definition which will be extracted from the rule structure from the JSON data.
+            </summary>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>19/02/2020 10:45 AM</DateTime>
+            </Created>
+        </member>
+        <member name="P:DevHorizons.Horus.Model.Variable.Name">
+            <summary>
+               Gets or sets the name of the variable. This variable name should be unique for all the rules.
+            </summary>
+            <value>
+            The name.
+            </value>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>19/02/2020 10:47 AM</DateTime>
+            </Created>
+        </member>
+        <member name="P:DevHorizons.Horus.Model.Variable.Type">
+            <summary>
+               Gets or sets the type of the variable.
+            </summary>
+            <value>
+            The type.
+            </value>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>19/02/2020 10:48 AM</DateTime>
+            </Created>
+        </member>
+        <member name="P:DevHorizons.Horus.Model.Variable.DefaultValue">
+            <summary>
+               Gets or sets the default value if no value is set.
+            </summary>
+            <value>
+               The default value if no value is set.
+            </value>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>02/07/2020 08:44 PM</DateTime>
+            </Created>
+        </member>
+        <member name="P:DevHorizons.Horus.Model.Variable.AllowNull">
+            <summary>
+               Gets or sets a value indicating whether the variable could be nullable.
+            </summary>
+            <value>
+              <c>true</c> if [allows null]; otherwise, <c>false</c>.
+            </value>
+            <Created>
+               <Author>Ahmad Gad (ahmad.gad@devhorizons.com)</Author>
+               <DateTime>04/12/2020 04:07 PM</DateTime>
+            </Created>
+        </member>
+    </members>
+</doc>
